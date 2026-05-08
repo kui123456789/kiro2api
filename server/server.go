@@ -50,16 +50,17 @@ func StartServer(port string, authToken string, authService *auth.AuthService) {
 	// GET /v1/models 端点
 	r.GET("/v1/models", func(c *gin.Context) {
 		// 构建模型列表
-		models := []types.Model{}
-		for anthropicModel := range config.ModelMap {
+		publicModels := config.PublicModels()
+		models := make([]types.Model, 0, len(publicModels))
+		for _, modelInfo := range publicModels {
 			model := types.Model{
-				ID:          anthropicModel,
+				ID:          modelInfo.ID,
 				Object:      "model",
 				Created:     1234567890,
-				OwnedBy:     "anthropic",
-				DisplayName: anthropicModel,
+				OwnedBy:     "kiro",
+				DisplayName: modelInfo.ID,
 				Type:        "text",
-				MaxTokens:   200000,
+				MaxTokens:   modelInfo.ContextWindow,
 			}
 			models = append(models, model)
 		}

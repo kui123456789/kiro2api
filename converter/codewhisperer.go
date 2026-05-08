@@ -281,8 +281,8 @@ func BuildCodeWhispererRequest(anthropicReq types.AnthropicRequest, ctx *gin.Con
 	}
 
 	// 检查模型映射是否存在，如果不存在则返回错误
-	modelId := config.ModelMap[anthropicReq.Model]
-	if modelId == "" {
+	modelId, exists := config.LookupModel(anthropicReq.Model)
+	if !exists {
 		logger.Warn("模型映射不存在",
 			logger.String("requested_model", anthropicReq.Model),
 			logger.String("request_id", cwReq.ConversationState.AgentContinuationId))
@@ -321,7 +321,7 @@ func BuildCodeWhispererRequest(anthropicReq types.AnthropicRequest, ctx *gin.Con
 			// 根据req.json的实际结构，确保JSON Schema完整性
 			cwTool := types.CodeWhispererTool{}
 			cwTool.ToolSpecification.Name = tool.Name
-			
+
 			// 限制 description 长度为 10000 字符
 			if len(tool.Description) > config.MaxToolDescriptionLength {
 				cwTool.ToolSpecification.Description = tool.Description[:config.MaxToolDescriptionLength]
