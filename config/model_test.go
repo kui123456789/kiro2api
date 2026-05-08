@@ -6,6 +6,18 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestModelMap_ClaudeOpus46(t *testing.T) {
+	model, exists := ModelMap["claude-opus-4-6"]
+	assert.True(t, exists)
+	assert.Equal(t, "CLAUDE_OPUS_4_6_V1_0", model)
+}
+
+func TestModelMap_ClaudeOpus47(t *testing.T) {
+	model, exists := ModelMap["claude-opus-4-7"]
+	assert.True(t, exists)
+	assert.Equal(t, "CLAUDE_OPUS_4_7_V1_0", model)
+}
+
 func TestModelMap_ClaudeSonnet45(t *testing.T) {
 	model, exists := ModelMap["claude-sonnet-4-5-20250929"]
 	assert.True(t, exists)
@@ -38,6 +50,8 @@ func TestModelMap_NonExistentModel(t *testing.T) {
 func TestModelMap_AllModelsHaveMapping(t *testing.T) {
 	// 确保所有模型都有对应的映射
 	expectedModels := []string{
+		"claude-opus-4-6",
+		"claude-opus-4-7",
 		"claude-sonnet-4-5-20250929",
 		"claude-sonnet-4-20250514",
 		"claude-3-7-sonnet-20250219",
