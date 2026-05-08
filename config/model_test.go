@@ -1,6 +1,7 @@
 package config
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -9,13 +10,13 @@ import (
 func TestModelMap_ClaudeOpus46(t *testing.T) {
 	model, exists := ModelMap["claude-opus-4-6"]
 	assert.True(t, exists)
-	assert.Equal(t, "CLAUDE_OPUS_4_6_V1_0", model)
+	assert.Equal(t, "claude-opus-4.6", model)
 }
 
 func TestModelMap_ClaudeOpus47(t *testing.T) {
 	model, exists := ModelMap["claude-opus-4-7"]
 	assert.True(t, exists)
-	assert.Equal(t, "CLAUDE_OPUS_4_7_V1_0", model)
+	assert.Equal(t, "claude-opus-4.7", model)
 }
 
 func TestModelMap_ClaudeSonnet45(t *testing.T) {
@@ -65,14 +66,25 @@ func TestModelMap_AllModelsHaveMapping(t *testing.T) {
 }
 
 func TestModelMap_MappingsAreCorrectFormat(t *testing.T) {
+	kiroModelIDs := map[string]struct{}{
+		"claude-opus-4.6": {},
+		"claude-opus-4.7": {},
+	}
+
 	for inputModel, outputModel := range ModelMap {
-		// 输出模型应该是大写格式或"auto"
-		if outputModel != "auto" {
-			assert.Contains(t, outputModel, "CLAUDE",
-				"Model mapping for %s should contain 'CLAUDE'", inputModel)
-			assert.Contains(t, outputModel, "_V1_0",
-				"Model mapping for %s should contain '_V1_0'", inputModel)
+		if outputModel == "auto" {
+			continue
 		}
+		if _, ok := kiroModelIDs[outputModel]; ok {
+			continue
+		}
+
+		assert.False(t, strings.HasPrefix(outputModel, "claude-"),
+			"Model mapping for %s should use a known Kiro model ID", inputModel)
+		assert.Contains(t, outputModel, "CLAUDE",
+			"Model mapping for %s should contain 'CLAUDE'", inputModel)
+		assert.Contains(t, outputModel, "_V1_0",
+			"Model mapping for %s should contain '_V1_0'", inputModel)
 	}
 }
 

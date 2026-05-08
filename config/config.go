@@ -7,8 +7,8 @@ import (
 
 // ModelMap 模型映射表
 var ModelMap = map[string]string{
-	"claude-opus-4-6":            "CLAUDE_OPUS_4_6_V1_0",
-	"claude-opus-4-7":            "CLAUDE_OPUS_4_7_V1_0",
+	"claude-opus-4-6":            "claude-opus-4.6",
+	"claude-opus-4-7":            "claude-opus-4.7",
 	"claude-sonnet-4-5":          "CLAUDE_SONNET_4_5_20250929_V1_0",
 	"claude-sonnet-4-5-20250929": "CLAUDE_SONNET_4_5_20250929_V1_0",
 	"claude-sonnet-4-20250514":   "CLAUDE_SONNET_4_20250514_V1_0",
